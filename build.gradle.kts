@@ -243,14 +243,13 @@ configure(subprojects.filter { it.isFree }) {
         configure<PublishingExtension> {
             repositories {
                 maven {
-                    name = "openrs2"
-                    url = if (version.toString().endsWith("-SNAPSHOT")) {
-                        uri("https://repo.openrs2.org/repository/openrs2-snapshots")
-                    } else {
-                        uri("https://repo.openrs2.org/repository/openrs2")
-                    }
+                    name = "GitHubPackages"
+                    url = uri("https://maven.pkg.github.com/blurite/openrs2")
 
-                    credentials(PasswordCredentials::class)
+                    credentials {
+                        username = project.findProperty("gpr.user") as String? ?: System.getenv("GITHUB_ACTOR")
+                        password = project.findProperty("gpr.key") as String? ?: System.getenv("GITHUB_TOKEN")
+                    }
                 }
             }
 
