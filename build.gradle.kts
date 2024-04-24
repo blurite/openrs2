@@ -305,7 +305,7 @@ tasks.dependencyUpdates {
 }
 
 tasks.register("publish") {
-    dependsOn("publishDokka")
+    // dependsOn("publishDokka")
 }
 
 tasks.register<Exec>("publishDokka") {
