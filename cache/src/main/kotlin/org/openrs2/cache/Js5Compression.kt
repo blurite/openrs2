@@ -64,7 +64,7 @@ public object Js5Compression {
         enableUncompressedEncryption: Boolean = false,
         key: SymmetricKey = SymmetricKey.ZERO
     ): ByteBuf {
-        val types = mutableListOf(Js5CompressionType.BZIP2, Js5CompressionType.GZIP)
+        val types = mutableListOf(/*Js5CompressionType.BZIP2, */Js5CompressionType.GZIP)
         if (enableLzma) {
             types += Js5CompressionType.LZMA
         }
