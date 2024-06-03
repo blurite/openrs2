@@ -4,7 +4,7 @@ import it.unimi.dsi.fastutil.longs.Long2ObjectLinkedOpenHashMap
 import it.unimi.dsi.fastutil.longs.LongArrayList
 
 internal class UnpackedCache(
-    private val capacity: Int
+    capacity: Int
 ) {
     private val cache = Long2ObjectLinkedOpenHashMap<Archive.Unpacked>()
 
@@ -17,11 +17,13 @@ internal class UnpackedCache(
     }
 
     fun put(archive: Int, group: Int, unpacked: Archive.Unpacked) {
-        while (cache.size >= capacity) {
+        /*while (cache.size >= capacity) {
             val lru = cache.removeFirst()
             lru.flush()
             lru.release()
-        }
+        }*/
+
+        // ^Do not release/flush the cache, as this results in severe, annoying bugs!
 
         cache.putAndMoveToLast(key(archive, group), unpacked)?.release()
     }
