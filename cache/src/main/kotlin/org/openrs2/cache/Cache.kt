@@ -186,6 +186,31 @@ public class Cache private constructor(
     }
 
     @JvmOverloads
+    public fun write(
+        archive: Int,
+        group: String,
+        file: String,
+        fileId: Int,
+        buf: ByteBuf,
+        key: SymmetricKey
+    ) {
+        writeNamed(archive, group.krHashCode(), file.krHashCode(), fileId, buf, key)
+    }
+
+    @JvmOverloads
+    public fun writeNamed(
+        archive: Int,
+        groupNameHash: Int,
+        fileNameHash: Int,
+        fileId: Int,
+        buf: ByteBuf,
+        key: SymmetricKey
+    ) {
+        checkArchive(archive)
+        createOrGetArchive(archive).writeNamed(groupNameHash, fileNameHash, fileId, buf, key)
+    }
+
+    @JvmOverloads
     public fun writeNamed(
         archive: Int,
         groupNameHash: Int,

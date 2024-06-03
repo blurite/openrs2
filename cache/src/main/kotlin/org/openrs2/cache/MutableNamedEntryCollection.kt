@@ -177,6 +177,17 @@ public abstract class MutableNamedEntryCollection<T : MutableNamedEntry>(
         return entry
     }
 
+    public fun createOrGetNamed(nameHash: Int, fileId: Int): T {
+        var entry = getNamed(nameHash)
+        if (entry != null) {
+            return entry
+        }
+
+        entry = createOrGet(fileId)
+        entry.nameHash = nameHash
+        return entry
+    }
+
     public fun createOrGet(name: String): T {
         return createOrGetNamed(name.krHashCode())
     }

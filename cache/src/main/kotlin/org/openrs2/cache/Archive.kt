@@ -60,6 +60,14 @@ public abstract class Archive internal constructor(
             dirty = true
         }
 
+        fun writeNamed(fileNameHash: Int, fileId: Int, buf: ByteBuf) {
+            ensureWritable()
+
+            val fileEntry = entry.createOrGetNamed(fileNameHash, fileId)
+            files.put(fileEntry.id, buf.copy().asReadOnly())?.release()
+            dirty = true
+        }
+
         fun remove(file: Int) {
             ensureWritable()
 
@@ -243,6 +251,16 @@ public abstract class Archive internal constructor(
         val entry = index.createOrGetNamed(groupNameHash)
         val unpacked = createOrGetUnpacked(entry, key, isOverwritingNamed(entry, fileNameHash))
         unpacked.writeNamed(fileNameHash, buf)
+
+        dirty = true
+        index.hasNames = true
+    }
+
+    @JvmOverloads
+    public fun writeNamed(groupNameHash: Int, fileNameHash: Int, fileId: Int, buf: ByteBuf, key: SymmetricKey = SymmetricKey.ZERO) {
+        val entry = index.createOrGetNamed(groupNameHash)
+        val unpacked = createOrGetUnpacked(entry, key, isOverwritingNamed(entry, fileNameHash))
+        unpacked.writeNamed(fileNameHash, fileId, buf)
 
         dirty = true
         index.hasNames = true
